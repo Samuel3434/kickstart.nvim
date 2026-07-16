@@ -185,7 +185,10 @@ do
   vim.api.nvim_create_autocmd({ 'TermOpen', 'BufEnter', 'WinEnter' }, {
     group = vim.api.nvim_create_augroup('TerminalSettings', { clear = true }),
     pattern = 'term://*',
-    callback = function() vim.cmd 'startinsert' end,
+    callback = function(event)
+      vim.cmd 'startinsert'
+      vim.keymap.set('t', '<Esc><Esc>', '<Esc><Esc>', { buffer = event.buf, desc = 'Pass through to opencode' })
+    end,
   })
 end
 
@@ -233,7 +236,6 @@ do
   --
   -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
   -- or just use <C-\><C-n> to exit terminal mode
-  vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
   vim.keymap.set('t', '<C-[>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
   -- TIP: Disable arrow keys in normal mode
@@ -1018,6 +1020,8 @@ do
   require 'kickstart.plugins.autopairs'
   require 'kickstart.plugins.neo-tree'
   require 'kickstart.plugins.gitsigns' -- adds gitsigns recommended keymaps
+  require 'kickstart.plugins.neogit'
+  require 'kickstart.plugins.opencode'
 
   -- NOTE: You can add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --
